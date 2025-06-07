@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookVerse - Discover Your Next Read</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f8f6f3;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c2c2c;
+            text-decoration: none;
+        }
+
+        .logo::before {
+            content: "📚";
+            margin-right: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2c2c2c;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 400px;
+            background: linear-gradient(135deg, rgba(139, 115, 85, 0.8), rgba(101, 67, 33, 0.8)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%23a0926b" width="1200" height="400"/><rect fill="%23654321" x="800" y="0" width="400" height="400"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23654321" width="100" height="100"/><rect fill="%23543210" x="0" y="0" width="20" height="100"/><rect fill="%23543210" x="25" y="0" width="20" height="100"/><rect fill="%23543210" x="50" y="0" width="20" height="100"/><rect fill="%23543210" x="75" y="0" width="20" height="100"/></svg>') repeat-x;
+            background-size: auto 100%;
+            opacity: 0.7;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            margin: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #2c2c2c;
+        }
+
+        /* Book Grid */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .book-info {
+            padding: 1.5rem;
+        }
+
+        .book-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #2c2c2c;
+        }
+
+        .book-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .book-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .amazon-link {
+            background: #ff9500;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .amazon-link:hover {
+            background: #e6851e;
+        }
+
+        .details-btn {
+            background: #2c2c2c;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .details-btn:hover {
+            background: #444;
+        }
+
+        /* Category Grid */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            position: relative;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0,0,0,0.6), rgba(0,0,0,0.2));
+            z-index: 1;
+        }
+
+        .category-name {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        /* Category Colors */
+        .category-fantasy { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .category-mystery { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .category-scifi { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .category-romance { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .category-thriller { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .category-historical { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .book-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">BookVerse</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#authors">Authors</a></li>
+                <li><a href="#new-releases">New Releases</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="icon-btn">❤️</button>
+                <button class="icon-btn">🛒</button>
+                <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23ddd'/><circle cx='20' cy='15' r='6' fill='%23999'/><path d='M8 32c0-6.6 5.4-12 12-12s12 5.4 12 12' fill='%23999'/></svg>" alt="Profile" class="profile-img">
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Discover Your Next Read</h1>
+            <p>Explore thousands of books across all genres and find your perfect literary companion</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Featured Books -->
+        <section class="section">
+            <h2 class="section-title">Featured Books</h2>
+            <div class="book-grid">
+                <article class="book-card" data-book="enchanted-forest">
+                    <div class="book-cover" style="background: linear-gradient(135deg, #2d5016 0%, #4a7c59 100%);">
+                        The Enchanted Forest<br>
+                        <small style="opacity: 0.8;">by Jane Wilderness</small>
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">The Enchanted Forest</h3>
+                        <p class="book-description">A tale of magic and adventure through mystical woodlands filled with ancient secrets.</p>
+                        <div class="book-links">
+                            <a href="https://amazon.com/enchanted-forest" class="amazon-link" target="_blank">Buy on Amazon</a>
+                            <button class="details-btn" onclick="showDetails('enchanted-forest')">Details</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="book-card" data-book="old-mill">
+                    <div class="book-cover" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                        The Secret of the Old Mill<br>
+                        <small style="opacity: 0.8;">by Michael Rivers</small>
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">The Secret of the Old Mill</h3>
+                        <p class="book-description">A thrilling mystery set in a small town where nothing is as it seems.</p>
+                        <div class="book-links">
+                            <a href="https://amazon.com/secret-old-mill" class="amazon-link" target="_blank">Buy on Amazon</a>
+                            <button class="details-btn" onclick="showDetails('old-mill')">Details</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="book-card" data-book="beyond-stars">
+                    <div class="book-cover" style="background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%);">
+                        Beyond the Stars<br>
+                        <small style="opacity: 0.8;">by Sarah Cosmos</small>
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">Beyond the Stars</h3>
+                        <p class="book-description">Explore the vastness of space in this epic science fiction adventure.</p>
+                        <div class="book-links">
+                            <a href="https://amazon.com/beyond-stars" class="amazon-link" target="_blank">Buy on Amazon</a>
+                            <button class="details-btn" onclick="showDetails('beyond-stars')">Details</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="book-card" data-book="love-cholera">
+                    <div class="book-cover" style="background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);">
+                        Love in the Time of Cholera<br>
+                        <small style="opacity: 0.8;">by Gabriel García Márquez</small>
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">Love in the Time of Cholera</h3>
+                        <p class="book-description">A timeless love story that spans decades and continents.</p>
+                        <div class="book-links">
+                            <a href="https://amazon.com/love-time-cholera" class="amazon-link" target="_blank">Buy on Amazon</a>
+                            <button class="details-btn" onclick="showDetails('love-cholera')">Details</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Popular Categories -->
+        <section class="section" id="categories">
+            <h2 class="section-title">Popular Categories</h2>
+            <div class="category-grid">
+                <div class="category-card category-fantasy">
+                    <span class="category-name">Fantasy</span>
+                </div>
+                <div class="category-card category-mystery">
+                    <span class="category-name">Mystery</span>
+                </div>
+                <div class="category-card category-scifi">
+                    <span class="category-name">Science Fiction</span>
+                </div>
+                <div class="category-card category-romance">
+                    <span class="category-name">Romance</span>
+                </div>
+                <div class="category-card category-thriller">
+                    <span class="category-name">Thriller</span>
+                </div>
+                <div class="category-card category-historical">
+                    <span class="category-name">Historical Fiction</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Book Details -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div id="modalContent">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Book details data
+        const bookDetails = {
+            'enchanted-forest': {
+                title: 'The Enchanted Forest',
+                author: 'Jane Wilderness',
+                fullDescription: 'Deep within the ancient woodlands lies a secret that has been protected for centuries. When young Elara stumbles upon a hidden path, she discovers a world where magic flows through every leaf and branch. But with great power comes great responsibility, and Elara must learn to harness her newfound abilities to protect the forest from those who would exploit its mysteries. A captivating tale of growth, courage, and the delicate balance between humanity and nature.',
+                genre: 'Fantasy',
+                pages: 384,
+                published: '2023',
+                rating: '4.5/5'
+            },
+            'old-mill': {
+                title: 'The Secret of the Old Mill',
+                author: 'Michael Rivers',
+                fullDescription: 'When investigative journalist Tom Brady arrives in the sleepy town of Millbrook to write a simple feature story, he uncovers a web of secrets that goes back generations. The old mill at the edge of town holds the key to a mystery that someone is willing to kill to keep buried. As Tom digs deeper, he realizes that everyone in town is hiding something, and the truth is more dangerous than he ever imagined.',
+                genre: 'Mystery/Thriller',
+                pages: 312,
+                published: '2024',
+                rating: '4.2/5'
+            },
+            'beyond-stars': {
+                title: 'Beyond the Stars',
+                author: 'Sarah Cosmos',
+                fullDescription: 'In the year 2387, humanity has spread across the galaxy, but peace is fragile. Captain Maya Chen and her diverse crew aboard the starship Horizon must navigate political intrigue, alien encounters, and the vast emptiness of space to prevent an interstellar war. When they discover an ancient artifact that could change the course of civilization, they must decide whether some knowledge is too dangerous to possess.',
+                genre: 'Science Fiction',
+                pages: 456,
+                published: '2024',
+                rating: '4.7/5'
+            },
+            'love-cholera': {
+                title: 'Love in the Time of Cholera',
+                author: 'Gabriel García Márquez',
+                fullDescription: 'A masterpiece of magical realism that tells the story of Florentino Ariza and his lifelong devotion to Fermina Daza. Set against the backdrop of a Caribbean port city, this epic tale explores the many forms of love - from youthful passion to mature companionship. García Márquez weaves a rich tapestry of human emotion that spans over fifty years, creating one of literature\'s most enduring love stories.',
+                genre: 'Literary Fiction',
+                pages: 368,
+                published: '1985',
+                rating: '4.8/5'
+            }
+        };
+
+        function showDetails(bookId) {
+            const book = bookDetails[bookId];
+            const modal = document.getElementById('bookModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <h2>${book.title}</h2>
+                <p><strong>Author:</strong> ${book.author}</p>
+                <p><strong>Genre:</strong> ${book.genre}</p>
+                <p><strong>Pages:</strong> ${book.pages}</p>
+                <p><strong>Published:</strong> ${book.published}</p>
+                <p><strong>Rating:</strong> ${book.rating}</p>
+                <h3>Description</h3>
+                <p>${book.fullDescription}</p>
+                <br>
+                <a href="https://amazon.com/${bookId}" class="amazon-link" target="_blank">Buy on Amazon</a>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('bookModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('bookModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Category click handlers
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const categoryName = this.querySelector('.category-name').textContent;
+                alert(`Viewing books in ${categoryName} category`);
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
